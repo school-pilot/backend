@@ -4,20 +4,18 @@
       "src": "sms_prj/wsgi.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.13",
-        "buildCommand": "bash build.sh"
+        "maxLambdaSize": "15mb"
       }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "sms_prj/wsgi.py"
-    },
-    {
       "src": "/static/(.*)",
       "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "sms_prj/wsgi.py"
     }
   ]
 }
