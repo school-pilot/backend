@@ -10,23 +10,38 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+# Optionally load environment variables from a .env file if python-dotenv is installed.
+try:
+    from dotenv import load_dotenv
+    DOTENV_AVAILABLE = True
+except Exception:
+    DOTENV_AVAILABLE = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load .env from project root when available
+if DOTENV_AVAILABLE:
+    env_path = BASE_DIR / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pmiuhd%w18w&v)afvipml*6c36^1$d=c7@shhv_fzdp^416(9#'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+# Supabase toggle - set to False if you don't have network access or want to use SQLite
+USE_SUPABASE = os.getenv('USE_SUPABASE')
 
 # Application definition
 
@@ -93,12 +108,33 @@ WSGI_APPLICATION = 'sms_prj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Default to SQLite for development unless Supabase is explicitly enabled and reachable
+import os
+from pathlib import Path
+
+USE_SUPABASE = os.getenv("USE_SUPABASE")
+
+if USE_SUPABASE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('PASSWORD'),
+            'HOST': os.getenv('HOST'),
+            'PORT': os.getenv('PORT'),
+            
+        }
     }
-}
+
+else:
+    # Fallback to SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -301,3 +337,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+
+# Supabase configuration (expects SUPABASE_URL and SUPABASE_KEY in environment or .env)
+
