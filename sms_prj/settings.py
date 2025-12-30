@@ -38,10 +38,20 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-pro
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['*']
+# Vercel deployment detection
+VERCEL = os.getenv('VERCEL', False)
 
-# Supabase toggle - set to False if you don't have network access or want to use SQLite
-USE_SUPABASE = os.getenv('USE_SUPABASE')
+# ALLOWED_HOSTS configuration
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '*.vercel.app',
+]
+if custom_domain := os.getenv('CUSTOM_DOMAIN'):
+    ALLOWED_HOSTS.append(custom_domain)
+
+# Supabase toggle - set to True for production with Supabase
+USE_SUPABASE = os.getenv('USE_SUPABASE', 'True').lower() in ('true', '1', 'yes')
 
 # Application definition
 
@@ -53,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     
     'accounts',
     'academics',
@@ -63,19 +74,17 @@ INSTALLED_APPS = [
     'reports',
     'fees',
     'audit',
-    # 'results',
     'staffs',
     'students',
     'subscriptions',
     'timetable',
     'rest_framework',
     'rest_framework_simplejwt',
-    
-    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,25 +117,22 @@ WSGI_APPLICATION = 'sms_prj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Default to SQLite for development unless Supabase is explicitly enabled and reachable
-import os
-from pathlib import Path
-
-USE_SUPABASE = os.getenv("USE_SUPABASE")
-
-if USE_SUPABASE:
+if USE_SUPABASE and os.getenv('HOST'):
+    # Supabase PostgreSQL configuration
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('PASSWORD'),
+            'NAME': os.getenv('DB_NAME', 'postgres'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('PASSWORD', ''),
             'HOST': os.getenv('HOST'),
-            'PORT': os.getenv('PORT'),
-            
+            'PORT': os.getenv('PORT', 5432),
+            'CONN_MAX_AGE': 600,
+            'OPTIONS': {
+                'connect_timeout': 10,
+            }
         }
     }
-
 else:
     # Fallback to SQLite for local development
     DATABASES = {
@@ -172,6 +178,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -335,9 +343,31 @@ JAZZMIN_UI_TWEAKS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     )
 }
 
+# CORS configuration for Vercel
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+]
+if custom_domain := os.getenv('CUSTOM_DOMAIN'):
+    CORS_ALLOWED_ORIGINS.append(f'https://{custom_domain}')
+if vercel_url := os.getenv('VERCEL_URL'):
+    CORS_ALLOWED_ORIGINS.append(f'https://{vercel_url}')
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Supabase configuration (expects SUPABASE_URL and SUPABASE_KEY in environment or .env)
+SUPABASE_URL = os.getenv('SUPABASE_URL', '')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY', '')
+SUPABASE = {
+    'url': SUPABASE_URL,
+    'key': SUPABASE_KEY,
+}
 

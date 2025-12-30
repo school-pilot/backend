@@ -1,0 +1,13 @@
+{
+  "buildCommand": "bash build.sh",
+  "devCommand": "python manage.py runserver 0.0.0.0:8000",
+  "installCommand": "pip install -r requirements.txt",
+  "env": {
+    "PYTHON_VERSION": "3.13"
+  },
+  "functions": {
+    "sms_prj/wsgi.py": {
+      "runtime": "python3.13"
+    }
+  }
+}
