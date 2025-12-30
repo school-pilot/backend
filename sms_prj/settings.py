@@ -42,11 +42,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 VERCEL = os.getenv('VERCEL', False)
 
 # ALLOWED_HOSTS configuration
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '*.vercel.app',
-]
+ALLOWED_HOSTS = ['*']
 if custom_domain := os.getenv('CUSTOM_DOMAIN'):
     ALLOWED_HOSTS.append(custom_domain)
 
@@ -180,7 +176,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
