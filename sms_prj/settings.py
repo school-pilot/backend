@@ -24,10 +24,8 @@ except Exception:
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env from project root when available
-if DOTENV_AVAILABLE:
-    env_path = BASE_DIR / '.env'
-    if env_path.exists():
-        load_dotenv(env_path)
+
+load_dotenv(os.path.join(BASE_DIR, '.env')) if DOTENV_AVAILABLE else None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -36,7 +34,7 @@ if DOTENV_AVAILABLE:
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
+DEBUG = os.getenv('DEBUG')
 
 # Vercel deployment detection
 VERCEL = os.getenv('VERCEL', False)
@@ -94,7 +92,9 @@ ROOT_URLCONF = 'sms_prj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

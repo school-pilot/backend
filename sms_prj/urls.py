@@ -14,11 +14,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+handler404 = 'sms_prj.views.custom_404_view'
+handler500 = 'sms_prj.views.custom_500_view'
 from django.contrib import admin
 from django.urls import path, include
+# import templateasview
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
     path('api/schools/', include('schools.urls')),
+    path('',TemplateView.as_view(template_name='index.html'), name='home')
 ]
+
+# Custom error handlers (used when DEBUG=False)
+
