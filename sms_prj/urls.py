@@ -25,6 +25,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
     path('api/schools/', include('schools.urls')),
+    path('api/students/', include('students.urls')),
+    path('api/teachers/', include('staffs.urls')),
+    path('api/academics/', include('academics.urls')),
+    path('api/attendance/', include('attendance.urls')),
+    path('api/results/', include('results.urls')),
+    path('api/fees/', include('fees.urls')),
+    path('api/communications/', include('communications.urls')),
+    path('api/timetable/', include('timetable.urls')),
+    path('api/reports/', include('reports.urls')),
+    path('api/subscriptions/', include('subscriptions.urls')),
+    path('api/audit/', include('audit.urls')),
+    path('api-docs/', TemplateView.as_view(template_name='api_docs.html'), name='api_docs'),
     path('',TemplateView.as_view(template_name='index.html'), name='home')
 ]
 

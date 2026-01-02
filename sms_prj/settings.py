@@ -77,6 +77,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # add whitenoise middleware here if using whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -368,4 +370,3 @@ SUPABASE = {
     'url': SUPABASE_URL,
     'key': SUPABASE_KEY,
 }
-

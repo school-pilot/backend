@@ -16,7 +16,7 @@
                 <p class="lead">This is the homepage for the SCHOOLPILOT API.</p>
                 <hr class="my-4">
                 <p>Use the sections below to explore the implemented API endpoints.</p>
-                <a class="btn btn-primary btn-lg" href="/api/docs/" role="button">API Documentation</a>
+                <a class="btn btn-primary btn-lg" href="/api-docs/" role="button">API Documentation</a>
             </div>
         </div>
     </header>
@@ -98,7 +98,51 @@
                 </div>
             </div>
 
-            <!-- Students (placeholder: no API included in root urls) -->
+            <!-- Sessions/Academic Sessions -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSessions">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSessions" aria-expanded="false" aria-controls="collapseSessions">
+                        Sessions & Terms Endpoints
+                    </button>
+                </h2>
+                <div id="collapseSessions" class="accordion-collapse collapse" aria-labelledby="headingSessions" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/schools/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/schools/session/create/</code>
+                                <div class="small text-muted">Create academic session. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/schools/session/view/&lt;school_id&gt;/</code>
+                                <div class="small text-muted">View all academic sessions for a school. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PUT / PATCH</strong> <code>/api/schools/session/update/&lt;session_id&gt;/</code>
+                                <div class="small text-muted">Update academic session. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/schools/term/create/</code>
+                                <div class="small text-muted">Create term within a session. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/schools/term/view/&lt;school_id&gt;/</code>
+                                <div class="small text-muted">View all terms for a school. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PUT / PATCH</strong> <code>/api/schools/term/update/&lt;term_id&gt;/</code>
+                                <div class="small text-muted">Update term details. School admin or super admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/schools/term/current/&lt;school_id&gt;/</code>
+                                <div class="small text-muted">Get current active term for a school. Requires Authentication.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingStudents">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStudents" aria-expanded="false" aria-controls="collapseStudents">
@@ -107,13 +151,98 @@
                 </h2>
                 <div id="collapseStudents" class="accordion-collapse collapse" aria-labelledby="headingStudents" data-bs-parent="#apiAccordion">
                     <div class="accordion-body">
-                        <p>No API routes for <strong>students</strong> are currently included under the project root (<code>/api/students/</code> is not registered in `sms_prj.urls`).</p>
-                        <div class="small text-muted">If you add `path('api/students/', include('students.urls'))` to `sms_prj/urls.py`, endpoints will appear here.</div>
+                        <p>Base path: <code>/api/students/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET / POST</strong> <code>/api/students/</code>
+                                <div class="small text-muted">List all students (GET) or create new student (POST). Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET / PATCH / DELETE</strong> <code>/api/students/&lt;student_id&gt;/</code>
+                                <div class="small text-muted">Get, update, or delete a student. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/students/&lt;student_id&gt;/promote/</code>
+                                <div class="small text-muted">Promote student to next class. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/students/&lt;student_id&gt;/profile/</code>
+                                <div class="small text-muted">Get student profile with guardian information. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/students/bulk-upload/</code>
+                                <div class="small text-muted">Bulk upload students from CSV file. Admin only.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Attendance (placeholder) -->
+            <!-- Teachers -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTeachers">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTeachers" aria-expanded="false" aria-controls="collapseTeachers">
+                        Teachers/Staff Endpoints
+                    </button>
+                </h2>
+                <div id="collapseTeachers" class="accordion-collapse collapse" aria-labelledby="headingTeachers" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/teachers/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET / POST</strong> <code>/api/teachers/</code>
+                                <div class="small text-muted">List all teachers (GET) or create new teacher (POST). Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET / PATCH</strong> <code>/api/teachers/&lt;teacher_id&gt;/</code>
+                                <div class="small text-muted">Get or update teacher details. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/teachers/&lt;teacher_id&gt;/assign-subjects/</code>
+                                <div class="small text-muted">Assign subjects to a teacher. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/teachers/&lt;teacher_id&gt;/classes/</code>
+                                <div class="small text-muted">Get classes assigned to a teacher. Requires Authentication.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academics -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingAcademics">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAcademics" aria-expanded="false" aria-controls="collapseAcademics">
+                        Academics Endpoints
+                    </button>
+                </h2>
+                <div id="collapseAcademics" class="accordion-collapse collapse" aria-labelledby="headingAcademics" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/academics/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/academics/classes/</code>
+                                <div class="small text-muted">List all classes. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/academics/arms/</code>
+                                <div class="small text-muted">Create a new class arm/section. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/academics/subjects/</code>
+                                <div class="small text-muted">List all subjects. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/academics/subjects/assign/</code>
+                                <div class="small text-muted">Assign subjects to a class. Admin only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingAttendance">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAttendance" aria-expanded="false" aria-controls="collapseAttendance">
@@ -122,22 +251,237 @@
                 </h2>
                 <div id="collapseAttendance" class="accordion-collapse collapse" aria-labelledby="headingAttendance" data-bs-parent="#apiAccordion">
                     <div class="accordion-body">
-                        <p>No API routes for <strong>attendance</strong> are currently included under the project root.</p>
-                        <div class="small text-muted">Add `path('api/attendance/', include('attendance.urls'))` to `sms_prj/urls.py` to expose these endpoints.</div>
+                        <p>Base path: <code>/api/attendance/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/attendance/mark/</code>
+                                <div class="small text-muted">Mark attendance for students. Teacher only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PATCH</strong> <code>/api/attendance/&lt;attendance_id&gt;/</code>
+                                <div class="small text-muted">Update attendance record. Teacher only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/attendance/</code>
+                                <div class="small text-muted">View attendance records. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/attendance/summary/</code>
+                                <div class="small text-muted">Get attendance summary report. Admin only.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Other / Modules placeholder -->
+            <!-- Results -->
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOther">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOther" aria-expanded="false" aria-controls="collapseOther">
-                        Other Modules
+                <h2 class="accordion-header" id="headingResults">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResults" aria-expanded="false" aria-controls="collapseResults">
+                        Results Endpoints
                     </button>
                 </h2>
-                <div id="collapseOther" class="accordion-collapse collapse" aria-labelledby="headingOther" data-bs-parent="#apiAccordion">
+                <div id="collapseResults" class="accordion-collapse collapse" aria-labelledby="headingResults" data-bs-parent="#apiAccordion">
                     <div class="accordion-body">
-                        <p>Other apps (results, fees, communications, etc.) will be listed here when their URLconfs are included in the project `sms_prj/urls.py`.</p>
+                        <p>Base path: <code>/api/results/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/results/assessments/</code>
+                                <div class="small text-muted">List all assessments. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/results/scores/</code>
+                                <div class="small text-muted">Enter scores for students. Teacher only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PATCH</strong> <code>/api/results/scores/&lt;score_id&gt;/</code>
+                                <div class="small text-muted">Update student score. Teacher only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/results/class/</code>
+                                <div class="small text-muted">Get class results. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/results/approve/</code>
+                                <div class="small text-muted">Approve class results. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/results/student/&lt;student_id&gt;/</code>
+                                <div class="small text-muted">Get student's results. Requires Authentication.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fees -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFees">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFees" aria-expanded="false" aria-controls="collapseFees">
+                        Fees Endpoints
+                    </button>
+                </h2>
+                <div id="collapseFees" class="accordion-collapse collapse" aria-labelledby="headingFees" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/fees/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/fees/categories/</code>
+                                <div class="small text-muted">Create fee category. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/fees/structures/</code>
+                                <div class="small text-muted">Assign fees to classes. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/fees/invoices/</code>
+                                <div class="small text-muted">List fee invoices. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/fees/invoices/&lt;invoice_id&gt;/</code>
+                                <div class="small text-muted">Get invoice details. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/fees/payments/</code>
+                                <div class="small text-muted">Record fee payment. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/fees/payments/history/</code>
+                                <div class="small text-muted">Get payment history. Admin only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communications -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingCommunications">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommunications" aria-expanded="false" aria-controls="collapseCommunications">
+                        Communications Endpoints
+                    </button>
+                </h2>
+                <div id="collapseCommunications" class="accordion-collapse collapse" aria-labelledby="headingCommunications" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/communications/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET / POST</strong> <code>/api/communications/announcements/</code>
+                                <div class="small text-muted">List announcements (GET) or create announcement (POST). Create requires admin.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/communications/notifications/</code>
+                                <div class="small text-muted">Get user notifications. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PATCH</strong> <code>/api/communications/notifications/&lt;notification_id&gt;/read/</code>
+                                <div class="small text-muted">Mark notification as read. Requires Authentication.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timetable -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTimetable">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTimetable" aria-expanded="false" aria-controls="collapseTimetable">
+                        Timetable Endpoints
+                    </button>
+                </h2>
+                <div id="collapseTimetable" class="accordion-collapse collapse" aria-labelledby="headingTimetable" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/timetable/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/timetable/</code>
+                                <div class="small text-muted">Create timetable. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/timetable/class/&lt;class_id&gt;/</code>
+                                <div class="small text-muted">Get class timetable. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/timetable/teacher/&lt;teacher_id&gt;/</code>
+                                <div class="small text-muted">Get teacher timetable. Teacher only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingReports">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
+                        Reports Endpoints
+                    </button>
+                </h2>
+                <div id="collapseReports" class="accordion-collapse collapse" aria-labelledby="headingReports" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/reports/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/reports/attendance/</code>
+                                <div class="small text-muted">Get attendance reports. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/reports/fees/</code>
+                                <div class="small text-muted">Get fees reports. Admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/reports/academics/</code>
+                                <div class="small text-muted">Get academics/results reports. Admin only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscriptions -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSubscriptions">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSubscriptions" aria-expanded="false" aria-controls="collapseSubscriptions">
+                        Subscriptions Endpoints
+                    </button>
+                </h2>
+                <div id="collapseSubscriptions" class="accordion-collapse collapse" aria-labelledby="headingSubscriptions" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/subscriptions/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/subscriptions/plans/</code>
+                                <div class="small text-muted">Get available subscription plans. Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/subscriptions/current/</code>
+                                <div class="small text-muted">Get current school subscription. School admin only.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/subscriptions/upgrade/</code>
+                                <div class="small text-muted">Upgrade to a new subscription plan. School admin only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingAudit">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAudit" aria-expanded="false" aria-controls="collapseAudit">
+                        Audit Endpoints
+                    </button>
+                </h2>
+                <div id="collapseAudit" class="accordion-collapse collapse" aria-labelledby="headingAudit" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p>Base path: <code>/api/audit/</code></p>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <strong>GET</strong> <code>/api/audit/logs/</code>
+                                <div class="small text-muted">Get system audit logs. Super admin only.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
