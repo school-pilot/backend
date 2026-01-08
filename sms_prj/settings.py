@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env from project root when available
 
-load_dotenv(os.path.join(BASE_DIR, '.env')) if DOTENV_AVAILABLE else None
+load_dotenv(os.path.join(BASE_DIR, '.env'),override=True) if DOTENV_AVAILABLE else None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -34,7 +34,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env')) if DOTENV_AVAILABLE else None
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # Vercel deployment detection
 VERCEL = os.getenv('VERCEL', False)
@@ -360,6 +361,11 @@ if custom_domain := os.getenv('CUSTOM_DOMAIN'):
     CORS_ALLOWED_ORIGINS.append(f'https://{custom_domain}')
 if vercel_url := os.getenv('VERCEL_URL'):
     CORS_ALLOWED_ORIGINS.append(f'https://{vercel_url}')
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
 
 CORS_ALLOW_CREDENTIALS = True
 

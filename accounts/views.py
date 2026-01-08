@@ -9,11 +9,21 @@ from .serializers import (
     )
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
+
+def custom_404_view(request, exception):
+    """Custom 404 error handler."""
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    """Custom 500 error handler."""
+    return render(request, '500.html', status=500)
 
 # Create your views here.
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     if request.method == 'POST':
         serializer = UserCreateSerializer(data=request.data)

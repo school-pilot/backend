@@ -14,8 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-handler404 = 'sms_prj.views.custom_404_view'
-handler500 = 'sms_prj.views.custom_500_view'
+handler404 = 'accounts.views.custom_404_view'
+handler500 = 'accounts.views.custom_500_view'
 from django.contrib import admin
 from django.urls import path, include
 # import templateasview
