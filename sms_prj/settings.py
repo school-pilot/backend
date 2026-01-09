@@ -351,12 +351,15 @@ REST_FRAMEWORK = {
 }
 
 # CORS configuration for Vercel
+# In your CORS_ALLOWED_ORIGINS list, add:
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://localhost:5170',
+    'http://localhost:5170',      # ADD THIS - Vite default port
+    'http://localhost:5173',      # ADD THIS - Vite alternative port
+    'http://127.0.0.1:5170',      # ADD THIS
 ]
 if custom_domain := os.getenv('CUSTOM_DOMAIN'):
     CORS_ALLOWED_ORIGINS.append(f'https://{custom_domain}')
