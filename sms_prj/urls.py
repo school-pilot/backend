@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/subscriptions/', include('subscriptions.urls')),
     path('api/audit/', include('audit.urls')),
     path('api-docs/', TemplateView.as_view(template_name='api_docs.html'), name='api_docs'),
+    path('api-docs-fields/', TemplateView.as_view(template_name='api_docs_fields.html'), name='api_docs_fields'),
     path('',TemplateView.as_view(template_name='index.html'), name='home')
 ]
 

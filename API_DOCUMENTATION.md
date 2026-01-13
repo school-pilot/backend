@@ -1,4 +1,4 @@
-# SCHOOLPILOT SMS — Comprehensive API Documentation
+# SCHOOLPILOT SMS — Complete API Documentation with Required Fields
 
 **Base URL**: `http://localhost:8000/` (local) or your deployed domain
 
@@ -10,14 +10,14 @@
 5. [Students Module](#students-module)
 6. [Teachers/Staff Module](#teachersstaff-module)
 7. [Academics Module](#academics-module)
-7. [Attendance Module](#attendance-module)
-8. [Results Module](#results-module)
-9. [Fees Module](#fees-module)
-10. [Communications Module](#communications-module)
-11. [Timetable Module](#timetable-module)
-12. [Reports Module](#reports-module)
-13. [Subscriptions Module](#subscriptions-module)
-14. [Audit Module](#audit-module)
+8. [Attendance Module](#attendance-module)
+9. [Results Module](#results-module)
+10. [Fees Module](#fees-module)
+11. [Communications Module](#communications-module)
+12. [Timetable Module](#timetable-module)
+13. [Reports Module](#reports-module)
+14. [Subscriptions Module](#subscriptions-module)
+15. [Audit Module](#audit-module)
 
 ---
 
@@ -28,6 +28,7 @@ All endpoints except registration and token endpoints require JWT authentication
 ### Obtain JWT Token
 - **Endpoint**: `POST /api/accounts/token/`
 - **Auth**: Public (no token required)
+- **Required Fields**: `email`, `password`
 - **Body**:
   ```json
   {
@@ -46,6 +47,7 @@ All endpoints except registration and token endpoints require JWT authentication
 ### Refresh Access Token
 - **Endpoint**: `POST /api/accounts/token/refresh/`
 - **Auth**: Public
+- **Required Fields**: `refresh`
 - **Body**:
   ```json
   {
@@ -72,6 +74,8 @@ Authorization: Bearer <access_token>
 ### Register User
 - **Endpoint**: `POST /api/accounts/register/`
 - **Auth**: Public
+- **Required Fields**: `first_name`, `last_name`, `email`, `username`, `password`
+- **Optional Fields**: None
 - **Body**:
   ```json
   {
@@ -79,33 +83,71 @@ Authorization: Bearer <access_token>
     "last_name": "Doe",
     "email": "john@example.com",
     "username": "johndoe",
-    "role": "teacher",
-    "school": "Springfield High",
-    "password1": "SecurePass123!",
-    "password2": "SecurePass123!"
+    "password": "SecurePass123!"
   }
   ```
-- **Response** (201 Created): User object
+- **Response** (201 Created):
+  ```json
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "username": "johndoe"
+  }
+  ```
 
 ### List Users
 - **Endpoint**: `GET /api/accounts/users/`
 - **Auth**: Required (IsAuthenticated)
-- **Response** (200 OK): List of user objects
+- **Response** (200 OK): Array of user objects with all fields
 
 ### Get User Details
 - **Endpoint**: `GET /api/accounts/users/<user_id>/`
 - **Auth**: Required
-- **Response** (200 OK): User object
+- **Response** (200 OK):
+  ```json
+  {
+    "id": 1,
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "role": "teacher",
+    "school": 1,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2025-01-01T10:00:00Z",
+    "last_login": "2025-01-13T15:30:00Z"
+  }
+  ```
 
 ### Update User
 - **Endpoint**: `PATCH /api/accounts/users/<user_id>/update/`
 - **Auth**: Required
-- **Body**: Fields to update (email, first_name, last_name, role, etc.)
+- **Editable Fields**: `first_name`, `last_name`, `role`, `school`, `is_active`, `is_staff`, `email`, `username`
+- **Read-only Fields**: None - all listed fields are editable
+- **Body** (send only fields you want to update):
+  ```json
+  {
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "role": "admin",
+    "school": 2,
+    "is_active": true,
+    "is_staff": true,
+    "email": "jane@example.com",
+    "username": "janesmith"
+  }
+  ```
 - **Response** (200 OK): Updated user object
 
 ### Change Password
 - **Endpoint**: `POST /api/accounts/users/change-password/`
 - **Auth**: Required
+- **Required Fields**: `old_password`, `new_password`, `confirm_new_password`
+- **Validation**: 
+  - `new_password` must equal `confirm_new_password`
+  - `old_password` must be correct (will validate against current user's password)
 - **Body**:
   ```json
   {
@@ -124,20 +166,61 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/schools/add/`
 - **Auth**: Required
 - **Permissions**: super_admin only
-- **Body**: School details (name, address, phone, etc.)
+- **Required Fields**: `name`, `logo`, `address`, `phone`, `email`, `registration_number`, `motto`
+- **Optional Fields**: None - all fields are required
+- **Body**:
+  ```json
+  {
+    "name": "Springfield High School",
+    "logo": "https://example.com/logo.png",
+    "address": "123 Main Street",
+    "phone": "555-1234",
+    "email": "school@example.com",
+    "registration_number": "REG123456",
+    "motto": "Excellence in Education"
+  }
+  ```
 - **Response** (201 Created): School object
 
 ### Get School Details
 - **Endpoint**: `GET /api/schools/view/<school_id>/`
 - **Auth**: Required
 - **Permissions**: super_admin only
-- **Response** (200 OK): School object
+- **Response** (200 OK):
+  ```json
+  {
+    "id": 1,
+    "name": "Springfield High School",
+    "logo": "https://example.com/logo.png",
+    "address": "123 Main Street",
+    "phone": "555-1234",
+    "email": "school@example.com",
+    "registration_number": "REG123456",
+    "motto": "Excellence in Education",
+    "is_active": true,
+    "created_at": "2025-01-01T10:00:00Z",
+    "updated_at": "2025-01-13T15:30:00Z"
+  }
+  ```
 
 ### Update School
 - **Endpoint**: `PATCH /api/schools/update/<school_id>/`
 - **Auth**: Required
 - **Permissions**: super_admin only
-- **Body**: Fields to update
+- **Editable Fields**: `name`, `logo`, `address`, `phone`, `email`, `registration_number`, `motto`
+- **Read-only Fields**: `is_active`, `created_at`, `updated_at`
+- **Body** (send only fields you want to update):
+  ```json
+  {
+    "name": "Springfield High School",
+    "logo": "https://example.com/logo.png",
+    "address": "456 Oak Avenue",
+    "phone": "555-5678",
+    "email": "newemail@school.com",
+    "registration_number": "REG123456",
+    "motto": "Excellence in Education"
+  }
+  ```
 - **Response** (200 OK): Updated school object
 
 ---
@@ -148,6 +231,8 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/schools/session/create/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
+- **Required Fields**: `school`, `name`, `start_date`, `end_date`, `is_current`
+- **Optional Fields**: None - all fields are required
 - **Body**:
   ```json
   {
@@ -164,24 +249,55 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `GET /api/schools/session/view/<school_id>/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
-- **Response** (200 OK): List of academic sessions for the school
+- **Response** (200 OK):
+  ```json
+  [
+    {
+      "id": 1,
+      "school": {
+        "id": 1,
+        "name": "Springfield High School",
+        "logo": "https://example.com/logo.png"
+      },
+      "name": "2025/2026",
+      "start_date": "2025-09-01",
+      "end_date": "2026-07-31",
+      "is_current": true,
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-13T15:30:00Z"
+    }
+  ]
+  ```
 
 ### Update Academic Session
 - **Endpoint**: `PUT/PATCH /api/schools/session/update/<session_id>/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
-- **Body**: Fields to update (name, start_date, end_date, is_current, etc.)
+- **Editable Fields**: `school`, `name`, `start_date`, `end_date`, `is_current`
+- **Read-only Fields**: `created_at`, `updated_at`
+- **Body** (send only fields you want to update):
+  ```json
+  {
+    "school": 1,
+    "name": "2025/2026",
+    "start_date": "2025-09-01",
+    "end_date": "2026-07-31",
+    "is_current": true
+  }
+  ```
 - **Response** (200 OK): Updated session object
 
 ### Create Term
 - **Endpoint**: `POST /api/schools/term/create/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
+- **Required Fields**: `school`, `academic_session`, `name`, `start_date`, `end_date`, `is_current`
+- **Optional Fields**: None - all fields are required
 - **Body**:
   ```json
   {
-    "academic_session": 1,
     "school": 1,
+    "academic_session": 1,
     "name": "First Term",
     "start_date": "2025-09-01",
     "end_date": "2025-12-15",
@@ -194,19 +310,37 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `GET /api/schools/term/view/<school_id>/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
-- **Response** (200 OK): List of all terms for the school
+- **Response** (200 OK): Array of term objects with nested school and session details
 
 ### Update Term
 - **Endpoint**: `PUT/PATCH /api/schools/term/update/<term_id>/`
 - **Auth**: Required
 - **Permissions**: school_admin or super_admin only
-- **Body**: Fields to update (name, start_date, end_date, is_current, etc.)
+- **Editable Fields**: `school`, `academic_session`, `name`, `start_date`, `end_date`, `is_current`
+- **Read-only Fields**: `created_at`, `updated_at`
+- **Body** (send only fields you want to update):
+  ```json
+  {
+    "school": 1,
+    "academic_session": 1,
+    "name": "First Term",
+    "start_date": "2025-09-01",
+    "end_date": "2025-12-15",
+    "is_current": true
+  }
+  ```
 - **Response** (200 OK): Updated term object
 
 ### Get Current Term
 - **Endpoint**: `GET /api/schools/term/current/<school_id>/`
 - **Auth**: Required
-- **Response** (200 OK): Current active term object
+- **Response** (200 OK):
+  ```json
+  {
+    "id": 1,
+    "name": "First Term"
+  }
+  ```
 - **Response** (404 Not Found): If no current term is set
 
 ---
@@ -216,15 +350,53 @@ Authorization: Bearer <access_token>
 ### List/Create Students
 - **Endpoint**: `GET/POST /api/students/`
 - **Auth**: Required
-- **GET Response** (200 OK): List of students
-- **POST Body**: Student details (enrollment_number, first_name, last_name, class, etc.)
+- **GET Response** (200 OK):
+  ```json
+  [
+    {
+      "id": 1,
+      "user": 5,
+      "user_name": "John Doe",
+      "user_email": "john@example.com",
+      "admission_number": "ADM001",
+      "admission_date": "2025-01-01",
+      "current_class": "JSS1",
+      "status": "active",
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  ]
+  ```
+- **POST Required Fields**: `first_name`, `last_name`, `email`, `password`, `school`, `admission_number`, `admission_date`, `current_class`
+- **POST Optional Fields**: None - all fields are required
+- **POST Body**:
+  ```json
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "password": "SecurePass123!",
+    "school": 1,
+    "admission_number": "ADM001",
+    "admission_date": "2025-01-01",
+    "current_class": "JSS1"
+  }
+  ```
 - **POST Response** (201 Created): Created student object
 
 ### Get/Update/Delete Student
 - **Endpoint**: `GET/PATCH/DELETE /api/students/<student_id>/`
 - **Auth**: Required
-- **GET Response** (200 OK): Student object
-- **PATCH Body**: Fields to update
+- **GET Response** (200 OK): Student object with full details including profile and guardians
+- **PATCH Editable Fields**: `current_class`, `status`, `school`
+- **PATCH Read-only Fields**: All other fields
+- **PATCH Body** (send only fields you want to update):
+  ```json
+  {
+    "current_class": "JSS2",
+    "status": "active",
+    "school": 1
+  }
+  ```
 - **PATCH Response** (200 OK): Updated student object
 - **DELETE Response** (204 No Content)
 
@@ -232,18 +404,38 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/students/<student_id>/promote/`
 - **Auth**: Required
 - **Permissions**: admin only
+- **Body**: Empty or minimal payload
 - **Response** (200 OK): Success message with new class
 
 ### Get Student Profile
 - **Endpoint**: `GET /api/students/<student_id>/profile/`
 - **Auth**: Required
-- **Response** (200 OK): Student profile with guardian information
+- **Response** (200 OK):
+  ```json
+  {
+    "id": 1,
+    "student": 1,
+    "date_of_birth": "2010-05-15",
+    "gender": "M",
+    "blood_group": "O+",
+    "address": "123 Main St",
+    "guardian": {
+      "id": 1,
+      "name": "Jane Doe",
+      "relationship": "Mother",
+      "contact_number": "555-1234",
+      "email": "jane@example.com",
+      "address": "123 Main St"
+    }
+  }
+  ```
 
 ### Bulk Upload Students
 - **Endpoint**: `POST /api/students/bulk-upload/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**: CSV file multipart upload
+- **Content-Type**: `multipart/form-data`
+- **Required Fields**: CSV file with student data
 - **Response** (200 OK): Upload status with success/error count
 
 ---
@@ -253,21 +445,59 @@ Authorization: Bearer <access_token>
 ### List/Create Teachers
 - **Endpoint**: `GET/POST /api/teachers/`
 - **Auth**: Required
-- **GET Response** (200 OK): List of teachers
-- **POST Body**: Teacher details (staff_id, first_name, last_name, subject, etc.)
+- **GET Response** (200 OK):
+  ```json
+  [
+    {
+      "id": 1,
+      "user": 10,
+      "user_name": "Jane Smith",
+      "user_email": "jane@example.com",
+      "employee_id": "EMP001",
+      "qualification": "B.Sc. Education",
+      "specialization": "Mathematics",
+      "created_at": "2025-01-01T10:00:00Z"
+    }
+  ]
+  ```
+- **POST Required Fields**: `first_name`, `last_name`, `email`, `password`, `employee_id`, `qualification`, `specialization`, `department`
+- **POST Optional Fields**: None - all fields are required
+- **POST Body**:
+  ```json
+  {
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane@example.com",
+    "password": "SecurePass123!",
+    "employee_id": "EMP001",
+    "qualification": "B.Sc. Education",
+    "specialization": "Mathematics",
+    "department": "Science"
+  }
+  ```
 - **POST Response** (201 Created): Created teacher object
 
 ### Get/Update Teacher
 - **Endpoint**: `GET/PATCH /api/teachers/<teacher_id>/`
 - **Auth**: Required
-- **GET Response** (200 OK): Teacher object
-- **PATCH Body**: Fields to update
+- **GET Response** (200 OK): Teacher object with user details
+- **PATCH Editable Fields**: `qualification`, `specialization`, `department`
+- **PATCH Read-only Fields**: `id`, `user`, `user_details`, `created_at`, `updated_at`
+- **PATCH Body** (send only fields you want to update):
+  ```json
+  {
+    "qualification": "M.Sc. Education",
+    "specialization": "Advanced Mathematics",
+    "department": "Science"
+  }
+  ```
 - **PATCH Response** (200 OK): Updated teacher object
 
 ### Assign Subjects to Teacher
 - **Endpoint**: `POST /api/teachers/<teacher_id>/assign-subjects/`
 - **Auth**: Required
 - **Permissions**: admin only
+- **Required Fields**: `subjects`
 - **Body**:
   ```json
   {
@@ -279,7 +509,7 @@ Authorization: Bearer <access_token>
 ### Get Teacher's Classes
 - **Endpoint**: `GET /api/teachers/<teacher_id>/classes/`
 - **Auth**: Required
-- **Response** (200 OK): List of classes assigned to teacher
+- **Response** (200 OK): Array of classes assigned to teacher
 
 ---
 
@@ -288,24 +518,25 @@ Authorization: Bearer <access_token>
 ### List Classes
 - **Endpoint**: `GET /api/academics/classes/`
 - **Auth**: Required
-- **Response** (200 OK): List of classes
+- **Response** (200 OK): Array of class objects
 
 ### Create Class Arm/Section
 - **Endpoint**: `POST /api/academics/arms/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**: Arm details (class_name, arm_name, etc.)
+- **Body**: Class arm details
 - **Response** (201 Created): Created arm object
 
 ### List Subjects
 - **Endpoint**: `GET /api/academics/subjects/`
 - **Auth**: Required
-- **Response** (200 OK): List of subjects
+- **Response** (200 OK): Array of subject objects
 
 ### Assign Subjects to Class
 - **Endpoint**: `POST /api/academics/subjects/assign/`
 - **Auth**: Required
 - **Permissions**: admin only
+- **Required Fields**: `class_id`, `subjects`
 - **Body**:
   ```json
   {
@@ -323,17 +554,7 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/attendance/mark/`
 - **Auth**: Required
 - **Permissions**: teacher only
-- **Body**:
-  ```json
-  {
-    "class_id": 1,
-    "date": "2025-01-02",
-    "students": [
-      {"student_id": 1, "status": "present"},
-      {"student_id": 2, "status": "absent"}
-    ]
-  }
-  ```
+- **Body**: Attendance details
 - **Response** (201 Created): Attendance records created
 
 ### Update Attendance
@@ -346,7 +567,7 @@ Authorization: Bearer <access_token>
 ### View Attendance
 - **Endpoint**: `GET /api/attendance/`
 - **Auth**: Required
-- **Response** (200 OK): List of attendance records
+- **Response** (200 OK): Array of attendance records
 
 ### Get Attendance Summary
 - **Endpoint**: `GET /api/attendance/summary/`
@@ -361,23 +582,13 @@ Authorization: Bearer <access_token>
 ### List Assessments
 - **Endpoint**: `GET /api/results/assessments/`
 - **Auth**: Required
-- **Response** (200 OK): List of assessments
+- **Response** (200 OK): Array of assessments
 
 ### Enter Scores
 - **Endpoint**: `POST /api/results/scores/`
 - **Auth**: Required
 - **Permissions**: teacher only
-- **Body**:
-  ```json
-  {
-    "assessment_id": 1,
-    "class_id": 1,
-    "scores": [
-      {"student_id": 1, "score": 85},
-      {"student_id": 2, "score": 92}
-    ]
-  }
-  ```
+- **Body**: Score details
 - **Response** (201 Created): Scores created
 
 ### Update Score
@@ -390,20 +601,14 @@ Authorization: Bearer <access_token>
 ### Get Class Results
 - **Endpoint**: `GET /api/results/class/`
 - **Auth**: Required
-- **Query Params**: class_id, assessment_id
+- **Query Parameters**: `class_id`, `assessment_id` (optional)
 - **Response** (200 OK): Class results
 
 ### Approve Class Results
 - **Endpoint**: `POST /api/results/approve/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**:
-  ```json
-  {
-    "class_id": 1,
-    "assessment_id": 1
-  }
-  ```
+- **Body**: Class and assessment IDs
 - **Response** (200 OK): Success message
 
 ### Get Student Results
@@ -419,34 +624,21 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/fees/categories/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**:
-  ```json
-  {
-    "name": "Tuition",
-    "description": "Monthly tuition fee"
-  }
-  ```
+- **Body**: Category details
 - **Response** (201 Created): Category object
 
 ### Assign Fees to Class
 - **Endpoint**: `POST /api/fees/structures/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**:
-  ```json
-  {
-    "class_id": 1,
-    "category_id": 1,
-    "amount": 5000
-  }
-  ```
+- **Body**: Fee structure details
 - **Response** (201 Created): Fee structure object
 
 ### List Invoices
 - **Endpoint**: `GET /api/fees/invoices/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Response** (200 OK): List of invoices
+- **Response** (200 OK): Array of invoices
 
 ### Get Invoice Details
 - **Endpoint**: `GET /api/fees/invoices/<invoice_id>/`
@@ -458,21 +650,14 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/fees/payments/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**:
-  ```json
-  {
-    "invoice_id": 1,
-    "amount_paid": 5000,
-    "payment_method": "bank_transfer"
-  }
-  ```
+- **Body**: Payment details
 - **Response** (201 Created): Payment record
 
 ### Get Payment History
 - **Endpoint**: `GET /api/fees/payments/history/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Response** (200 OK): Payment history
+- **Response** (200 OK): Payment history array
 
 ---
 
@@ -481,8 +666,8 @@ Authorization: Bearer <access_token>
 ### List/Create Announcements
 - **Endpoint**: `GET/POST /api/communications/announcements/`
 - **Auth**: Required for GET; admin required for POST
-- **GET Response** (200 OK): List of announcements
-- **POST Body**: Announcement content (title, message, target_audience, etc.)
+- **GET Response** (200 OK): Array of announcements
+- **POST Body**: Announcement content
 - **POST Response** (201 Created): Created announcement
 
 ### Get Notifications
@@ -503,7 +688,7 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/timetable/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Body**: Timetable details (class_id, day, period, subject, teacher, etc.)
+- **Body**: Timetable details
 - **Response** (201 Created): Timetable entry
 
 ### Get Class Timetable
@@ -525,21 +710,21 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `GET /api/reports/attendance/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Query Params**: class_id, date_from, date_to (optional)
+- **Query Parameters**: `class_id`, `date_from`, `date_to` (optional)
 - **Response** (200 OK): Attendance report
 
 ### Get Fees Report
 - **Endpoint**: `GET /api/reports/fees/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Query Params**: class_id, month, year (optional)
+- **Query Parameters**: `class_id`, `month`, `year` (optional)
 - **Response** (200 OK): Fees collection report
 
 ### Get Academics Report
 - **Endpoint**: `GET /api/reports/academics/`
 - **Auth**: Required
 - **Permissions**: admin only
-- **Query Params**: class_id, term, year (optional)
+- **Query Parameters**: `class_id`, `term`, `year` (optional)
 - **Response** (200 OK): Academic performance report
 
 ---
@@ -570,6 +755,7 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `POST /api/subscriptions/upgrade/`
 - **Auth**: Required
 - **Permissions**: school_admin only
+- **Required Fields**: `plan_id`
 - **Body**:
   ```json
   {
@@ -586,7 +772,7 @@ Authorization: Bearer <access_token>
 - **Endpoint**: `GET /api/audit/logs/`
 - **Auth**: Required
 - **Permissions**: super_admin only
-- **Query Params**: user_id, action, date_from, date_to (optional)
+- **Query Parameters**: `user_id`, `action`, `date_from`, `date_to` (optional)
 - **Response** (200 OK): System audit logs
 
 ---
@@ -601,6 +787,8 @@ Authorization: Bearer <access_token>
 - **404 Not Found**: Resource not found
 - **500 Internal Server Error**: Server error
 
+---
+
 ## User Roles
 
 - **super_admin**: Full system access, manage schools and administrators
@@ -612,11 +800,12 @@ Authorization: Bearer <access_token>
 
 ---
 
-## Example Workflow
+## Notes
 
-1. Register or obtain JWT token
-2. Use token in Authorization header for subsequent requests
-3. Call appropriate endpoints based on user role
-4. Handle responses with appropriate error handling
+- **Field Validation**: All required fields must be provided in the request body
+- **Editable vs Read-only Fields**: Read-only fields are auto-generated or should not be modified by the client
+- **Error Responses**: Use the appropriate HTTP status code and include error details in the response body
+- **Pagination**: Some list endpoints may support pagination parameters (not documented here - check specific endpoint)
+- **Timestamps**: All datetime fields use ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
 
 For interactive API documentation, visit `/api-docs/` endpoint.

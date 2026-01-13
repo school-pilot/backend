@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOLPILOT API Documentation - With Required Fields</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .header-section h1 {
+            font-weight: bold;
+        }
+        .endpoint-card {
+            background-color: white;
+            border-left: 4px solid #667eea;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint-method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+            margin-right: 0.5rem;
+        }
+        .method-get {
+            background-color: #28a745;
+        }
+        .method-post {
+            background-color: #007bff;
+        }
+        .method-patch {
+            background-color: #ffc107;
+            color: black;
+        }
+        .method-put {
+            background-color: #fd7e14;
+        }
+        .method-delete {
+            background-color: #dc3545;
+        }
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .auth-required {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .section-title {
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-left: 4px solid #667eea;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        .nav-back {
+            margin-bottom: 2rem;
+        }
+        .module-badge {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .permissions {
+            background-color: #f0f0f0;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: #d63384;
+        }
+        .required-fields {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .required-badge {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-right: 0.25rem;
+            font-weight: bold;
+        }
+        .optional-badge {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-right: 0.25rem;
+            font-weight: bold;
+        }
+        .readonly-badge {
+            display: inline-block;
+            background-color: #17a2b8;
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-right: 0.25rem;
+            font-weight: bold;
+        }
+        .field-list {
+            list-style: none;
+            padding-left: 0;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+        .field-list li {
+            padding: 0.25rem 0;
+        }
+        .field-list code {
+            background-color: #fff8f0;
+            color: #d63384;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-section">
+        <div class="container">
+            <div class="nav-back">
+                <a href="/" class="btn btn-outline-light btn-sm">← Back to Home</a>
+            </div>
+            <h1>SCHOOLPILOT API Documentation</h1>
+            <p class="lead mb-0">Complete reference with required fields for all API endpoints</p>
+        </div>
+    </div>
+
+    <main class="container mb-5">
+        <!-- Authentication -->
+        <div class="section-title">
+            <h2>Authentication</h2>
+        </div>
+        <div class="alert alert-info">
+            <strong>JWT Token-Based Authentication</strong>
+            <p class="mb-0 mt-2">All protected endpoints require a JWT token in the Authorization header:</p>
+            <code>Authorization: Bearer &lt;access_token&gt;</code>
+        </div>
+
+        <!-- Accounts -->
+        <div class="section-title">
+            <h2>Accounts Module</h2>
+            <span class="module-badge">Authentication & User Management</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/accounts/register/</span>
+            <p class="mt-2">Register a new user account</p>
+            <div class="permissions"><strong>Permissions:</strong> Public (no token required)</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>first_name</code> - User's first name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>last_name</code> - User's last name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>email</code> - User's email (email format)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>username</code> - Unique username (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>password</code> - Password (string, write-only)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/accounts/token/</span>
+            <p class="mt-2">Obtain JWT access and refresh tokens</p>
+            <div class="permissions"><strong>Permissions:</strong> Public</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>email</code> - User's email (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>password</code> - User's password (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/accounts/token/refresh/</span>
+            <p class="mt-2">Refresh access token using refresh token</p>
+            <div class="permissions"><strong>Permissions:</strong> Public</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>refresh</code> - Refresh token (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/accounts/users/</span>
+            <p class="mt-2">List all users</p>
+            <div class="auth-required">Requires Authentication</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/accounts/users/&lt;user_id&gt;/</span>
+            <p class="mt-2">Get details for a single user</p>
+            <div class="auth-required">Requires Authentication</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/accounts/users/&lt;user_id&gt;/update/</span>
+            <p class="mt-2">Update user fields</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>username</code>, <code>role</code>, <code>school</code>, <code>is_active</code>, <code>is_staff</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/accounts/users/change-password/</span>
+            <p class="mt-2">Change password for authenticated user</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>old_password</code> - Current password (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>new_password</code> - New password (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>confirm_new_password</code> - Confirm new password (must match new_password)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Schools -->
+        <div class="section-title">
+            <h2>Schools Module</h2>
+            <span class="module-badge">School Management</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/schools/add/</span>
+            <p class="mt-2">Create a new school</p>
+            <div class="permissions"><strong>Permissions:</strong> super_admin only</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>name</code> - School name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>logo</code> - School logo URL (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>address</code> - School address (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>phone</code> - School phone (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>email</code> - School email (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>registration_number</code> - School registration number (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>motto</code> - School motto (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/schools/view/&lt;school_id&gt;/</span>
+            <p class="mt-2">View school details</p>
+            <div class="permissions"><strong>Permissions:</strong> super_admin only</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/schools/update/&lt;school_id&gt;/</span>
+            <p class="mt-2">Update school details</p>
+            <div class="permissions"><strong>Permissions:</strong> super_admin only</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>name</code>, <code>logo</code>, <code>address</code>, <code>phone</code>, <code>email</code>, <code>registration_number</code>, <code>motto</code></li>
+                </ul>
+                <strong style="display: block; margin-top: 0.5rem;">Read-only Fields:</strong>
+                <ul class="field-list">
+                    <li><code>is_active</code>, <code>created_at</code>, <code>updated_at</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sessions & Terms -->
+        <div class="section-title">
+            <h2>Sessions & Terms Module</h2>
+            <span class="module-badge">Academic Calendar</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/schools/session/create/</span>
+            <p class="mt-2">Create academic session</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin or super_admin only</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>school</code> - School ID (integer)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>name</code> - Session name (string, e.g., "2025/2026")</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>start_date</code> - Start date (date format: YYYY-MM-DD)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>end_date</code> - End date (date format: YYYY-MM-DD)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>is_current</code> - Is current session (boolean)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/schools/session/view/&lt;school_id&gt;/</span>
+            <p class="mt-2">View all academic sessions for a school</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin or super_admin only</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/schools/session/update/&lt;session_id&gt;/</span>
+            <p class="mt-2">Update academic session details</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin or super_admin only</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>school</code>, <code>name</code>, <code>start_date</code>, <code>end_date</code>, <code>is_current</code></li>
+                </ul>
+                <strong style="display: block; margin-top: 0.5rem;">Read-only Fields:</strong>
+                <ul class="field-list">
+                    <li><code>created_at</code>, <code>updated_at</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Students -->
+        <div class="section-title">
+            <h2>Students Module</h2>
+            <span class="module-badge">Student Management</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/students/</span>
+            <p class="mt-2">Create new student</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>first_name</code> - Student's first name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>last_name</code> - Student's last name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>email</code> - Student's email (email format)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>password</code> - Student account password (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>school</code> - School ID (integer)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>admission_number</code> - Unique admission number (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>admission_date</code> - Admission date (date format: YYYY-MM-DD)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>current_class</code> - Current class (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/students/&lt;student_id&gt;/</span>
+            <p class="mt-2">Update student details</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>current_class</code>, <code>status</code>, <code>school</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/students/&lt;student_id&gt;/promote/</span>
+            <p class="mt-2">Promote student to next class</p>
+            <div class="permissions"><strong>Permissions:</strong> admin only</div>
+        </div>
+
+        <!-- Teachers -->
+        <div class="section-title">
+            <h2>Teachers/Staff Module</h2>
+            <span class="module-badge">Staff Management</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/teachers/</span>
+            <p class="mt-2">Create new teacher</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>first_name</code> - Teacher's first name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>last_name</code> - Teacher's last name (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>email</code> - Teacher's email (email format)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>password</code> - Teacher account password (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>employee_id</code> - Unique employee ID (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>qualification</code> - Educational qualification (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>specialization</code> - Subject specialization (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>department</code> - Department (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/teachers/&lt;teacher_id&gt;/</span>
+            <p class="mt-2">Update teacher details</p>
+            <div class="auth-required">Requires Authentication</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>qualification</code>, <code>specialization</code>, <code>department</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/teachers/&lt;teacher_id&gt;/assign-subjects/</span>
+            <p class="mt-2">Assign subjects to a teacher</p>
+            <div class="permissions"><strong>Permissions:</strong> admin only</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>subjects</code> - Array of subject IDs (array of integers)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Subscriptions -->
+        <div class="section-title">
+            <h2>Subscriptions Module</h2>
+            <span class="module-badge">Billing & Plans</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/subscriptions/plans/</span>
+            <p class="mt-2">Get available subscription plans</p>
+            <div class="auth-required">Requires Authentication</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/subscriptions/current/</span>
+            <p class="mt-2">Get current school subscription</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin only</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/subscriptions/upgrade/</span>
+            <p class="mt-2">Upgrade to a new subscription plan</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin only</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>plan_id</code> - Plan ID to upgrade to (integer)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="section-title">
+            <h2>General Notes</h2>
+        </div>
+        <div class="alert alert-secondary">
+            <ul class="mb-0">
+                <li><strong>Authentication:</strong> All endpoints except registration and token endpoints require a valid JWT token in the Authorization header.</li>
+                <li><strong>Role-Based Access:</strong> Many endpoints are restricted to specific user roles (admin, teacher, student, school_admin, super_admin).</li>
+                <li><strong>Required vs Optional:</strong> All required fields must be provided. Optional fields can be omitted.</li>
+                <li><strong>Editable vs Read-only:</strong> Editable fields can be modified via PATCH/PUT. Read-only fields are auto-generated or system-managed.</li>
+                <li><strong>Response Format:</strong> All endpoints return JSON responses with appropriate HTTP status codes.</li>
+                <li><strong>Date Format:</strong> Use ISO 8601 format for dates (YYYY-MM-DD) and datetimes (YYYY-MM-DDTHH:mm:ssZ).</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
