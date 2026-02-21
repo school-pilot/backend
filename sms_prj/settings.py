@@ -34,8 +34,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env'),override=True) if DOTENV_AVAILABLE el
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv('DEBUG')
-DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
+DEBUG = True
+# DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # Vercel deployment detection
 VERCEL = os.getenv('VERCEL', False)

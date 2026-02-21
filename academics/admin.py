@@ -28,7 +28,7 @@ class SubjectAdmin(admin.ModelAdmin):
     
 @admin.register(academic_models.SubjectAssignment)
 class SubjectAssignmentAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'class_assigned', 'arm', 'teacher', 'session', 'school')
-    search_fields = ('subject__name', 'class_assigned__name', 'arm__name', 'teacher__full_name')
-    list_filter = ('school', 'session', 'class_assigned', 'arm')
-    
+    list_display = ('subject', 'class_assigned', 'teacher', 'session', 'school')
+    search_fields = ('subject__name', 'class_assigned__name', 'teacher__full_name')
+    list_filter = ('school', 'session', 'class_assigned')
+

@@ -16,7 +16,7 @@
                 <p class="lead">This is the homepage for the SCHOOLPILOT API.</p>
                 <hr class="my-4">
                 <p>Use the sections below to explore the implemented API endpoints.</p>
-                <a class="btn btn-primary btn-lg" href="/api-docs/" role="button">API Documentation</a>
+                <a class="btn btn-primary btn-lg" href="/api-docs-fields/" role="button">API Documentation</a>
             </div>
         </div>
     </header>
@@ -367,15 +367,31 @@
                         <div class="list-group">
                             <div class="list-group-item">
                                 <strong>GET / POST</strong> <code>/api/communications/announcements/</code>
-                                <div class="small text-muted">List announcements (GET) or create announcement (POST). Create requires admin.</div>
+                                <div class="small text-muted">List announcements (GET). Create via POST is allowed but only users with role <code>super_admin</code> or school admin may create.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/communications/announcements/create/</code>
+                                <div class="small text-muted">Create a new announcement. Requires <code>super_admin</code> role.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PATCH</strong> <code>/api/communications/announcements/&lt;announcement_id&gt;/update/</code>
+                                <div class="small text-muted">Update an existing announcement. Requires <code>super_admin</code> role.</div>
                             </div>
                             <div class="list-group-item">
                                 <strong>GET</strong> <code>/api/communications/notifications/</code>
-                                <div class="small text-muted">Get user notifications. Requires Authentication.</div>
+                                <div class="small text-muted">Retrieve notifications for the authenticated user (GET). Requires Authentication.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>POST</strong> <code>/api/communications/notifications/create/</code>
+                                <div class="small text-muted">Create a notification (school or system admins). Requires <code>school_admin</code> or <code>super_admin</code>.</div>
+                            </div>
+                            <div class="list-group-item">
+                                <strong>PATCH</strong> <code>/api/communications/notifications/&lt;notification_id&gt;/update/</code>
+                                <div class="small text-muted">Update a notification. Requires <code>school_admin</code> or <code>super_admin</code>.</div>
                             </div>
                             <div class="list-group-item">
                                 <strong>PATCH</strong> <code>/api/communications/notifications/&lt;notification_id&gt;/read/</code>
-                                <div class="small text-muted">Mark notification as read. Requires Authentication.</div>
+                                <div class="small text-muted">Mark a notification as read for the authenticated user (PATCH).</div>
                             </div>
                         </div>
                     </div>

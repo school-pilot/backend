@@ -43,10 +43,10 @@ class SubjectAssignment(models.Model):
     school = models.ForeignKey(school_models.School, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE)
-    arm = models.ForeignKey(Arm, on_delete=models.CASCADE)
+    # arm = models.ForeignKey(Arm, on_delete=models.CASCADE)
     teacher = models.ForeignKey(staff_models.Teacher, on_delete=models.CASCADE)
     session = models.ForeignKey(school_models.AcademicSession, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.subject.name} assigned to {self.class_assigned.name} - {self.arm.name} - {self.teacher.full_name()} - {self.session.name}"
+        return f"{self.subject.name} assigned to {self.class_assigned.name} - {self.teacher.full_name()} - {self.session.name}"
     

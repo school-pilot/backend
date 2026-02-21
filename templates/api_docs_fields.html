@@ -465,6 +465,93 @@
             <h2>Subscriptions Module</h2>
             <span class="module-badge">Billing & Plans</span>
         </div>
+        <!-- Communications -->
+        <div class="section-title">
+            <h2>Communications Module</h2>
+            <span class="module-badge">Announcements & Notifications</span>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/communications/announcements/</span>
+            <p class="mt-2">List all announcements</p>
+            <div class="auth-required">Requires Authentication (GET). Creation restricted to admins.</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/communications/announcements/create/</span>
+            <p class="mt-2">Create a new announcement</p>
+            <div class="permissions"><strong>Permissions:</strong> super_admin only</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>title</code> - Announcement title (string)</li>
+                    <li><span class="required-badge">REQUIRED</span> <code>content</code> - Announcement content/body (string)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/communications/announcements/&lt;announcement_id&gt;/update/</span>
+            <p class="mt-2">Update an existing announcement</p>
+            <div class="permissions"><strong>Permissions:</strong> super_admin only</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>title</code>, <code>content</code></li>
+                </ul>
+                <strong style="display: block; margin-top: 0.5rem;">Read-only Fields:</strong>
+                <ul class="field-list">
+                    <li><code>id</code>, <code>created_at</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/communications/notifications/</span>
+            <p class="mt-2">Retrieve notifications for the authenticated user</p>
+            <div class="auth-required">Requires Authentication</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/communications/notifications/create/</span>
+            <p class="mt-2">Create a notification</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin or super_admin</div>
+            <div class="required-fields">
+                <strong>Required Fields:</strong>
+                <ul class="field-list">
+                    <li><span class="required-badge">REQUIRED</span> <code>message</code> - Notification message (string)</li>
+                </ul>
+                <strong style="display: block; margin-top: 0.5rem;">Read-only Fields:</strong>
+                <ul class="field-list">
+                    <li><code>id</code>, <code>user</code>, <code>created_at</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/communications/notifications/&lt;notification_id&gt;/update/</span>
+            <p class="mt-2">Update a notification</p>
+            <div class="permissions"><strong>Permissions:</strong> school_admin or super_admin</div>
+            <div class="required-fields">
+                <strong>Editable Fields (send only fields to update):</strong>
+                <ul class="field-list">
+                    <li><code>message</code>, <code>is_read</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method method-patch">PATCH</span>
+            <span class="endpoint-path">/api/communications/notifications/&lt;notification_id&gt;/read/</span>
+            <p class="mt-2">Mark a notification as read for the authenticated user</p>
+            <div class="auth-required">Requires Authentication</div>
+        </div>
 
         <div class="endpoint-card">
             <span class="endpoint-method method-get">GET</span>

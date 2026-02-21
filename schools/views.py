@@ -42,6 +42,17 @@ def view_schools(request,school_id):
         return Response(serializer.data)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_all_schools(request):
+    if request.user.role != 'super_admin':
+        return Response({'error': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
+    if request.method == 'GET':
+        schools = School.objects.all()
+        serializer = ViewSchoolSerializer(schools, many=True)
+        return Response(serializer.data)
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])

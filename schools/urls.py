@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (
     add_school,
     view_schools,
+    view_all_schools,
     update_school,
     create_session,
     view_sessions,
@@ -13,9 +14,11 @@ from .views import (
     )
 
 urlpatterns = [
+    
     path('add/', add_school, name='add_school'),
     path('view/<int:school_id>/', view_schools, name='view_schools'),
     path('update/<int:school_id>/', update_school, name='update_school'),
+    path('view-all/', view_all_schools, name='view_all_schools'),
     
     # session urls
     path('session/create/', create_session, name='create_session'),
