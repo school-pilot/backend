@@ -14,7 +14,7 @@ from .serializers import (
         UpdateTermSerializer,
         GetCurrentTermSerializer
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
@@ -24,8 +24,6 @@ from rest_framework import status
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_school(request):
-    if request.user.role != 'super_admin':
-        return Response({'error': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         serializer = AddSchoolSerializer(data=request.data)
         if serializer.is_valid():
