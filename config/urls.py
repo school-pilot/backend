@@ -38,11 +38,11 @@ urlpatterns = [
     path('api/subscriptions/', include('subscriptions.urls')),
     path('api/audit/', include('audit.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api-docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='api-docs'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='api-docs'),
     path('api-docs-redoc/', SpectacularRedocView.as_view(url_name='schema'), name='api-docs-redoc'),
     path('api-docs-static/', TemplateView.as_view(template_name='api_docs.html'), name='api_docs_static'),
     path('api-docs-fields/', TemplateView.as_view(template_name='api_docs_fields.html'), name='api_docs_fields'),
-    path('', TemplateView.as_view(template_name='index.html'), name='home')
+    # path('', TemplateView.as_view(template_name='index.html'), name='home')
 ]
 
 # Custom error handlers (used when DEBUG=False)
