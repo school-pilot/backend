@@ -375,3 +375,4 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Supabase configuration (expects SUPABASE_URL and SUPABASE_KEY in environment or .env)
 
+FLUTTERWAVE_SECRET_KEY = os.getenv('FLUTTERWAVE_SECRET_KEY')
