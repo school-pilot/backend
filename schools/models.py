@@ -1,7 +1,10 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 # Create your models here.
 class School(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school_profile', blank=True, null=True)
     name = models .CharField(max_length=100)
     logo = models.ImageField(upload_to='school_logos/')
     address = models.TextField()

@@ -14,6 +14,8 @@ from .serializers import (
         UpdateTermSerializer,
         GetCurrentTermSerializer
 )
+from accounts.serializers import UserCreateSerializer
+
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -21,13 +23,42 @@ from rest_framework import status
 
 
 # Create your views here.
+
+# ======================== Admin create school ====================
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def admin_create_school(request):
+    if request.user.role != 'super_admin':
+        return Response({'error': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
+    if request.method == 'POST':
+        school_serializer = AddSchoolSerializer(data=request.data)
+        user_serializer = UserCreateSerializer(data=request.data)
+        
+        if school_serializer.is_valid() and user_serializer.is_valid():
+            user = user_serializer.save()
+            school = school_serializer.save()
+            school.user = user
+            school.save()
+            
+            return Response([school_serializer.data, user_serializer.data], status=status.HTTP_201_CREATED)
+        return Response([school_serializer.errors, user_serializer.errors], status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_school(request):
+    user = request.user
     if request.method == 'POST':
         serializer = AddSchoolSerializer(data=request.data)
+        
         if serializer.is_valid():
-            serializer.save()
+            # get the user from the request and associate it with the school
+            school = serializer.save()
+            school.user = user
+            school.save()
+            user.role = 'school_admin'
+            user.school = school.name
+            user.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
